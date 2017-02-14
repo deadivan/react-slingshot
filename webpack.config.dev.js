@@ -11,7 +11,9 @@ export default {
   entry: [
     // must be first entry to properly set public path
     './src/webpack-public-path',
+    'react-hot-loader/patch',
     'webpack-hot-middleware/client?reload=true',
+    'webpack/hot/only-dev-server',
     path.resolve(__dirname, 'src/index.js') // Defining path seems necessary for this to work consistently on Windows machines.
   ],
   target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
@@ -21,6 +23,7 @@ export default {
     filename: 'bundle.js'
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
       __DEV__: true
@@ -40,13 +43,18 @@ export default {
       debug: true,
       noInfo: true, // set to false to see a list of every file being bundled.
       options: {
+        /*
         sassLoader: {
           includePaths: [path.resolve(__dirname, 'src', 'scss')]
-        },
+        },*/
         context: '/',
-        postcss: () => [autoprefixer],
+        postcss: () => [
+          autoprefixer,
+          require('postcss-simple-vars'),
+          require('postcss-nested')
+        ],
       }
-    }) 
+    })
   ],
   module: {
     rules: [
@@ -57,7 +65,11 @@ export default {
       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'},
       {test: /\.(jpe?g|png|gif)$/i, loader: 'file-loader?name=[name].[ext]'},
       {test: /\.ico$/, loader: 'file-loader?name=[name].[ext]'},
-      {test: /(\.css|\.scss)$/, loaders: ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'sass-loader?sourceMap']}
+      {test: /\.css$/, loaders: [
+        'style-loader',
+        'css-loader?sourceMap',
+        'postcss-loader'
+      ]}
     ]
   }
 };

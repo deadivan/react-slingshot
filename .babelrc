@@ -6,8 +6,10 @@
   "env": {
     "development": {
       "presets": [
-        "latest",
-        "react-hmre"
+        "latest"
+      ],
+      "plugins": [
+        "react-hot-loader/babel"
       ]
     },
     "production": {
@@ -15,7 +17,7 @@
         ["latest", {
           "es2015": {
             "modules": false
-          }  
+          }
         }],
       ],
       "plugins": [
@@ -30,4 +32,3 @@
     }
   }
 }
-

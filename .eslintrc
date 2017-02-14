@@ -25,11 +25,16 @@
     "jest": true
   },
   "rules": {
-    "quotes": 0,
+    "quotes": [1, "single"],
+    "strict": [2, "never"],
+    "comma-dangle": ["error", "only-multiline"],
+    "no-unused-vars" : 1,
+    "no-undef" : 1,
+    "object-shorthand": 1,
+    "arrow-parens": [1, 'as-needed' ],
     "no-console": 1,
     "no-debugger": 1,
     "no-var": 1,
-    "semi": [1, "always"],
     "no-trailing-spaces": 0,
     "eol-last": 0,
     "no-underscore-dangle": 0,
